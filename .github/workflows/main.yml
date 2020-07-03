@@ -7,16 +7,16 @@ on: push
 jobs:
 	# Job ID
   testJob01:
-	  # Job name
-		name: Hello world action
+	# Job name
+    name: Hello world action
 		# Environment
 		# Available OS
 		# Linux, macOS, Windows
-		runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 		# Step
-		steps:
+    steps:
 			# source code 확인
-		- name: checkout source code
-			uses: actions/checkout@master
-		- name: echo hello world
-		  uses: echo "hello world" 
+    - name: checkout source code
+      uses: actions/checkout@master
+    - name: echo hello world
+      uses: echo "hello world" 
