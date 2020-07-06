@@ -11,8 +11,8 @@ namespace GameSystem
         bool SetHighScore(int score);
         SystemDefine.EGameState GetState();
         void SetState(SystemDefine.EGameState state);
-        Action GetStateEvent(SystemDefine.EGameState state);
-        Action GetScoreEvent(SystemDefine.EScoreType type);
+        SystemDefine.VoidEvent GetStateEvent(SystemDefine.EGameState state);
+        SystemDefine.VoidEvent GetScoreEvent(SystemDefine.EScoreType type);
     }
 }
 

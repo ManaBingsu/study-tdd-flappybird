@@ -8,6 +8,8 @@ namespace GameSystem
 {
     public class GameManager : MonoBehaviour, IGameManagerAdapter
     {
+        // Delegate
+        delegate void EventHandler();
         // Singleton
         public static GameManager _instance;
 
@@ -17,16 +19,24 @@ namespace GameSystem
         private SystemDefine.EGameState gameState;
 
         // State event
-        private Action startEvent;
-        private Action playingEvent;
-        private Action fallEvent;
+        private event SystemDefine.VoidEvent startEvent;
+        private event SystemDefine.VoidEvent playingEvent;
+        private event SystemDefine.VoidEvent fallEvent;
+
+        void Awake()
+        {
+            if (_instance == null)
+                _instance = this;
+            else
+                Destroy(this.gameObject);
+        }
 
         public SystemDefine.EGameState GetState()
         {
             return gameState;
         }
 
-        public Action GetStateEvent(SystemDefine.EGameState state)
+        public SystemDefine.VoidEvent GetStateEvent(SystemDefine.EGameState state)
         {
             switch(state)
             {
@@ -47,13 +57,13 @@ namespace GameSystem
             switch (gameState)
             {
                 case SystemDefine.EGameState.Start:
-                    startEvent();
+                    startEvent?.Invoke();
                     break;
                 case SystemDefine.EGameState.Playing:
-                    playingEvent();
+                    playingEvent?.Invoke();
                     break;
                 case SystemDefine.EGameState.Fall:
-                    fallEvent();
+                    fallEvent?.Invoke();
                     break;
             }
         }

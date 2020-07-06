@@ -1,14 +1,13 @@
-﻿using NSubstitute.Exceptions;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Sockets;
+﻿using System;
 using UnityEngine;
 
 namespace GameSystem
 {
     public class ScoreManager : MonoBehaviour, IScoreManagerAdapter
     {
+        // Singleton
+        public static ScoreManager _instance;
+
         // State
         [Header("State")]
         [SerializeField]
@@ -22,13 +21,13 @@ namespace GameSystem
         private int highScore;
 
         // SetScore event
-        Action setCurrentScoreEvent;
-        Action setHighScoreEvent;
+        private event SystemDefine.VoidEvent setCurrentScoreEvent;
+        private event SystemDefine.VoidEvent setHighScoreEvent;
 
         // State event
-        private Action startEvent;
-        private Action playingEvent;
-        private Action fallEvent;
+        private event SystemDefine.VoidEvent startEvent;
+        private event SystemDefine.VoidEvent playingEvent;
+        private event SystemDefine.VoidEvent fallEvent;
 
         public int GetCurrentScore()
         {
@@ -71,7 +70,7 @@ namespace GameSystem
             return gameState;
         }
 
-        public Action GetStateEvent(SystemDefine.EGameState state)
+        public SystemDefine.VoidEvent GetStateEvent(SystemDefine.EGameState state)
         {
             switch (state)
             {
@@ -88,17 +87,38 @@ namespace GameSystem
 
         public void Initialize()
         {
-            throw new System.NotImplementedException();
+            currentScore = 0;
+
         }
 
         public void SetState(SystemDefine.EGameState state)
         {
-            throw new System.NotImplementedException();
+            gameState = state;
+            switch (gameState)
+            {
+                case SystemDefine.EGameState.Start:
+                    startEvent();
+                    break;
+                case SystemDefine.EGameState.Playing:
+                    playingEvent();
+                    break;
+                case SystemDefine.EGameState.Fall:
+                    fallEvent();
+                    break;
+            }
         }
 
-        public Action GetScoreEvent(SystemDefine.EScoreType type)
+        public SystemDefine.VoidEvent GetScoreEvent(SystemDefine.EScoreType type)
         {
-            throw new NotImplementedException();
+            switch (type)
+            {
+                case SystemDefine.EScoreType.Current:
+                    return setCurrentScoreEvent;
+                case SystemDefine.EScoreType.High:
+                    return setHighScoreEvent;
+                default:
+                    return null;
+            }
         }
     }
 }

@@ -45,13 +45,19 @@ namespace Tests
         public void IsStateSetToPlaying()
         {
         }
+        [Test]
         public void IsPipeGenerateCoroutineStart()
         {
 
         }
+        [Test]
         public void IsPipeGeneratedRandomly()
         {
 
+        }
+        [Test]
+        public void IsPipeSpeedChangeWhenChangeManagerValue()
+        {
         }
         #endregion
         #region State.Fall test

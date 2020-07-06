@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Bird
+namespace Input
 {
-    public class BirdManager : MonoBehaviour
+    public class InputManager : MonoBehaviour
     {
 
     }

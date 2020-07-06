@@ -1,5 +1,5 @@
 {
-    "name": "BirdAsmf",
+    "name": "EntityAsmf",
     "references": [
         "GUID:6bbcaae9b33854c4fbb08ccdd3531460"
     ],
@@ -8,7 +8,7 @@
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false

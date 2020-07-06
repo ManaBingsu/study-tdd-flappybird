@@ -1,12 +1,15 @@
 {
-    "name": "PipeAsmf",
-    "references": [],
+    "name": "InputAsmf",
+    "references": [
+        "GUID:6bbcaae9b33854c4fbb08ccdd3531460",
+        "GUID:99766d082ca59914fa4decefcd864303"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false

@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace GameSystem
+﻿namespace GameSystem
 {
     interface IGameManagerAdapter
     {
         SystemDefine.EGameState GetState();
         void SetState(SystemDefine.EGameState state);
-        Action GetStateEvent(SystemDefine.EGameState state);
+        SystemDefine.VoidEvent GetStateEvent(SystemDefine.EGameState state);
     }
 }
 
