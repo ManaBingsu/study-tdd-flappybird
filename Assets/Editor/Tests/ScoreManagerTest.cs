@@ -6,56 +6,55 @@ using UnityEngine.TestTools;
 
 namespace Tests
 {
-    public class PipeTest
+    public class ScoreManagerTest
     {
         #region Initialize test
         [Test]
-        public void IsStateInitializedToOff()
+        public void IsStateInitializedToStart()
         {
 
         }
         [Test]
-        public void IsActiveFalseWhenInitialized()
-        {
-
-        }
-        #endregion
-        #region State.On, Inbound test
-        [Test]
-        public void IsStateOnWhenInBound()
-        {
-
-        }
-        [Test]
-        public void IsActiveTrueWhenInBound()
+        public void IsScoreSetToZero()
         {
 
         }
         #endregion
-        #region State.On, OutBound test
+        #region State.Start test
         [Test]
-        public void IsStateSetOffWhenOutOfBound()
+        public void IsStateSetToStart()
+        {
+
+        }
+        [Test]
+        public void IsScoreSetToZeroWhenStart()
         {
 
         }
         #endregion
-        #region State.Off test
+        #region State.Playing test
         [Test]
-        public void IsStateSetToOffWhenOutOfBound()
+        public void IsStateSetToPlaying()
+        {
+
+        }
+        #endregion
+        #region State.Fall test
+        [Test]
+        public void IsHighScoreChangedWhenBirdGetAHighestScore()
         {
 
         }
         [Test]
-        public void IsReturnToQueueWhenOff()
+        public void IsStateSetToFall()
         {
 
         }
         [Test]
-        public void IsSetActiveFalseWhenOff()
+        public void IsScoreSaved()
         {
 
         }
         #endregion
     }
 }
-

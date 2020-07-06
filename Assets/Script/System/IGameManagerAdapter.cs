@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
 
 namespace GameSystem
 {
-    public interface IGameManagerAdapter
+    interface IGameManagerAdapter
     {
-        void SetState(GameManager.GameManagerState state);
+        SystemDefine.EGameState GetState();
+        void SetState(SystemDefine.EGameState state);
+        Action GetStateEvent(SystemDefine.EGameState state);
     }
 }
 

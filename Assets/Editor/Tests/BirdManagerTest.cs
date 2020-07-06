@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEditor.VersionControl;
 
 namespace Tests
 {
-    public class PipeManagerTest
+    public class BirdManagerTest
     {
         #region Initialize test
         [Test]
@@ -15,16 +16,7 @@ namespace Tests
 
         }
         [Test]
-        public void HasPipePrefab()
-        {
-
-        }
-        [Test]
-        public void IsPipeGeneratePosSetRight()
-        {
-
-        }
-        public void IsPipeQueuePipesSetActiveFalse()
+        public void HasBird()
         {
 
         }
@@ -35,44 +27,34 @@ namespace Tests
         {
 
         }
-        public void IsPipeQueuePipesSetActiveFalseWhenStart()
+        public void IsBirdStateSetStartWhenStateSetToStart()
         {
 
         }
         #endregion
         #region State.Playing test
         [Test]
-        public void IsStateSetToPlaying()
-        {
-        }
-        public void IsPipeGenerateCoroutineStart()
+        public void IsStateSetToPlayingWhenPressedAssignedKey()
         {
 
         }
-        public void IsPipeGeneratedRandomly()
+        [Test]
+        public void IsBirdStateSetPlayingWhenStateSetToPlaying()
         {
 
         }
+
         #endregion
         #region State.Fall test
         [Test]
         public void IsStateSetToFall()
         {
         }
-        public void IsPipeGenerateCoroutineStop()
+        [Test]
+        public void IsBirdStateSetFallWhenStateSetToFall()
         {
 
         }
         #endregion
-        [SetUp]
-        public void PrepareTest()
-        {
-
-        }
-        [TearDown]
-        public void CleanUpTest()
-        {
-
-        }
     }
 }

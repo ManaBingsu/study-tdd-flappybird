@@ -1,13 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 
 namespace GameSystem
 {
     public interface IScoreManagerAdapter
     {
         void Initialize();
-        int GetScore();
+        int GetCurrentScore();
+        int GetHighScore();
+        void SetCurrentScore(int score);
+        bool SetHighScore(int score);
+        SystemDefine.EGameState GetState();
+        void SetState(SystemDefine.EGameState state);
+        Action GetStateEvent(SystemDefine.EGameState state);
+        Action GetScoreEvent(SystemDefine.EScoreType type);
     }
 }
 

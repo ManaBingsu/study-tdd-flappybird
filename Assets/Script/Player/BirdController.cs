@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -7,14 +8,44 @@ namespace Bird
 {
     public class BirdController : MonoBehaviour, IBirdAdapter
     {
+        public bool Flying()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public BirdController GetBird()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public float GetBirdGravityScale()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Vector2 GetBirdPos()
         {
-            return transform.position;
+            throw new System.NotImplementedException();
+        }
+
+        public BirdDefine.EBirdState GetState()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Action GetStateEvent(BirdDefine.EBirdState state)
+        {
+            throw new NotImplementedException();
         }
 
         public void Initialize()
         {
-            transform.position = new Vector2(0, 0);
+            throw new System.NotImplementedException();
+        }
+
+        public void SetState(BirdDefine.EBirdState state)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

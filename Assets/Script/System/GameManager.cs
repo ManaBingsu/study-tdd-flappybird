@@ -8,24 +8,55 @@ namespace GameSystem
 {
     public class GameManager : MonoBehaviour, IGameManagerAdapter
     {
-        public Action initAction;
-       
-        public void SetState(GameManagerState state)
+        // Singleton
+        public static GameManager _instance;
+
+        // State
+        [Header("State")]
+        [SerializeField]
+        private SystemDefine.EGameState gameState;
+
+        // State event
+        private Action startEvent;
+        private Action playingEvent;
+        private Action fallEvent;
+
+        public SystemDefine.EGameState GetState()
         {
-            if (state == GameManagerState.Start)
+            return gameState;
+        }
+
+        public Action GetStateEvent(SystemDefine.EGameState state)
+        {
+            switch(state)
             {
-                initAction();
+                case SystemDefine.EGameState.Start:
+                    return startEvent;
+                case SystemDefine.EGameState.Playing:
+                    return playingEvent;
+                case SystemDefine.EGameState.Fall:
+                    return fallEvent;
+                default:
+                    return null;
             }
-
         }
 
-        public void Initialized()
+        public void SetState(SystemDefine.EGameState state)
         {
-            initAction += new Action(() => Debug.Log("dd"));
-            initAction += new Action(() => Debug.Log("aa"));
+            gameState = state;
+            switch (gameState)
+            {
+                case SystemDefine.EGameState.Start:
+                    startEvent();
+                    break;
+                case SystemDefine.EGameState.Playing:
+                    playingEvent();
+                    break;
+                case SystemDefine.EGameState.Fall:
+                    fallEvent();
+                    break;
+            }
         }
-
-        public enum GameManagerState { Start, Playing, End }
     }
 }
 

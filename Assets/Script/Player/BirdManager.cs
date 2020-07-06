@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Pipe
+namespace Bird
 {
-    public interface IPipeGeneratorAdapter
+    public class BirdManager : MonoBehaviour
     {
-        
+
     }
 }
 

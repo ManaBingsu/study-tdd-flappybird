@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using NSubstitute;
 using GameSystem;
-using Bird;
 
 namespace Tests
 {
@@ -13,72 +11,61 @@ namespace Tests
     {
         GameManager gameManager;
 
-        // Start state
+        #region Initialize test
         [Test]
-        public void Start_00IsScoreInitialize()
-        {
-            gameManager.SetState(GameManager.GameManagerState.Start);
-            Assert.AreEqual(scoreManager.GetScore(), 0);
-        }
-        [Test]
-        public void Start_01IsBirdPosInitialized()
-        {  
-            gameManager.SetState(GameManager.GameManagerState.Start);
-            Assert.AreEqual(bird.GetBirdPos(), new Vector2(0, 0));
-        }
-        [Test]
-        public void Start_02IsPipeGeneratorInitialized()
+        public void IsGameManagerPrefabNotNull()
         {
 
         }
         [Test]
-        public void Start_03IsUIInitialized()
-        {
-
-        }
-        // Playing State
-        [Test]
-        public void Playing_00IsScoreInitialize()
+        public void HasSingleton()
         {
 
         }
         [Test]
-        public void Playing_01IsPlayerInitialized()
+        public void HasScoreManager()
         {
 
         }
         [Test]
-        public void Playing_02IsPipeGeneratorInitialized()
+        public void HasBirdManager()
         {
 
         }
         [Test]
-        public void Playing_03IsUIInitialized()
-        {
-
-        }
-        // End State
-        [Test]
-        public void End_00IsScoreInitialize()
+        public void HasPipeManager()
         {
 
         }
         [Test]
-        public void End_01IsPlayerInitialized()
+        public void IsStateInitializedToStart()
         {
 
         }
+        #endregion
+        #region State.Start test
         [Test]
-        public void End_02IsPipeGeneratorInitialized()
+        public void IsStateSetToStart()
         {
 
         }
+        #endregion
+        #region State.Playing test
         [Test]
-        public void End_03IsUIInitialized()
+        public void IsStateSetToPlaying()
         {
 
         }
-        
+        #endregion
+        #region State.Fall test
+        [Test]
+        public void IsStateSetToFall()
+        {
+
+        }
+        #endregion
+
+
         [SetUp]
         public void PrepareTest()
         {
