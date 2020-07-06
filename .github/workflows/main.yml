@@ -19,4 +19,4 @@ jobs:
     - name: checkout source code
       uses: actions/checkout@master
     - name: echo hello world
-      uses: echo "hello world" 
+      run: echo "hello world" 
