@@ -29,6 +29,46 @@ namespace GameSystem
         private event SystemDefine.VoidEvent playingEvent;
         private event SystemDefine.VoidEvent fallEvent;
 
+        private void Awake()
+        {
+            Initialize();
+        }
+
+        public void Initialize()
+        {
+            // Make singleton
+            if (_instance == null)
+                _instance = this;
+            else
+                Destroy(this.gameObject);
+            // Initialize score
+            currentScore = 0;
+            // Initialize event
+            GameManager._instance.SetStateEvent(SystemDefine.EGameState.Start, StartEvent);
+            GameManager._instance.SetStateEvent(SystemDefine.EGameState.Playing, PlayingEvent);
+            GameManager._instance.SetStateEvent(SystemDefine.EGameState.Fall, FallEvent);
+            // Change high score
+            highScore = PlayerPrefs.GetInt("HighScore");
+        }
+
+
+        private void StartEvent()
+        {
+            SetState(SystemDefine.EGameState.Start);
+            currentScore = 0;
+        }
+
+        private void PlayingEvent()
+        {
+            SetState(SystemDefine.EGameState.Playing);
+        }
+
+        private void FallEvent()
+        {
+            SetState(SystemDefine.EGameState.Fall);
+            SetHighScore(currentScore);
+        }
+
         public int GetCurrentScore()
         {
             return currentScore;
@@ -41,10 +81,13 @@ namespace GameSystem
 
         public void SetCurrentScore(int score)
         {
+            // If not in playing state, return
+            if (gameState != SystemDefine.EGameState.Playing)
+                return;
             // Set new current score
             currentScore = score;
             // Run setScore event
-            setCurrentScoreEvent();
+            setCurrentScoreEvent?.Invoke();
         }
 
         public bool SetHighScore(int score)
@@ -56,7 +99,7 @@ namespace GameSystem
                 // Save high score
                 PlayerPrefs.SetInt("HighScore", highScore);
                 // Run setScore event
-                setHighScoreEvent();
+                setHighScoreEvent?.Invoke();
                 return true;
             }
             else
@@ -70,40 +113,18 @@ namespace GameSystem
             return gameState;
         }
 
-        public SystemDefine.VoidEvent GetStateEvent(SystemDefine.EGameState state)
+        public void SetStateEvent(SystemDefine.EGameState state, SystemDefine.VoidEvent func)
         {
             switch (state)
             {
                 case SystemDefine.EGameState.Start:
-                    return startEvent;
-                case SystemDefine.EGameState.Playing:
-                    return playingEvent;
-                case SystemDefine.EGameState.Fall:
-                    return fallEvent;
-                default:
-                    return null;
-            }
-        }
-
-        public void Initialize()
-        {
-            currentScore = 0;
-
-        }
-
-        public void SetState(SystemDefine.EGameState state)
-        {
-            gameState = state;
-            switch (gameState)
-            {
-                case SystemDefine.EGameState.Start:
-                    startEvent();
+                    startEvent += func;
                     break;
                 case SystemDefine.EGameState.Playing:
-                    playingEvent();
+                    playingEvent += func;
                     break;
                 case SystemDefine.EGameState.Fall:
-                    fallEvent();
+                    fallEvent += func;
                     break;
             }
         }
@@ -120,5 +141,24 @@ namespace GameSystem
                     return null;
             }
         }
+
+        public void SetState(SystemDefine.EGameState state)
+        {
+            gameState = state;
+            switch (gameState)
+            {
+                case SystemDefine.EGameState.Start:
+                    startEvent?.Invoke();
+                    break;
+                case SystemDefine.EGameState.Playing:
+                    playingEvent?.Invoke();
+                    break;
+                case SystemDefine.EGameState.Fall:
+                    fallEvent?.Invoke();
+                    break;
+            }
+        }
+
+
     }
 }

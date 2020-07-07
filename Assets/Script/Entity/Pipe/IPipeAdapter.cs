@@ -12,6 +12,6 @@ namespace Pipe
         void SetPipeSpeed(float speed);
         PipeDefine.EPipeState GetState();
         void SetState(PipeDefine.EPipeState state);
-        SystemDefine.VoidEvent GetStateEvent(PipeDefine.EPipeState state);
+        void SetStateEvent(PipeDefine.EPipeState state, SystemDefine.VoidEvent func);
     }
 }

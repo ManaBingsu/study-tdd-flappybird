@@ -29,9 +29,6 @@ namespace Bird
         private event SystemDefine.VoidEvent playingEvent;
         private event SystemDefine.VoidEvent fallEvent;
 
-        // Gravity
-        private float birdGravity;
-
         private void Awake()
         {
             Initialize();
@@ -45,34 +42,34 @@ namespace Bird
             rigidBody = GetComponent<Rigidbody2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
-            // Set gravity
-            birdGravity = birdStat.GetBirdGravity();
-            // Event to Manager
-            SystemDefine.VoidEvent startEvent = BirdManager._instance.GetStateEvent(BirdDefine.EBirdManagerState.Start);
-            startEvent += StartEvent;
-            SystemDefine.VoidEvent playingEvent = BirdManager._instance.GetStateEvent(BirdDefine.EBirdManagerState.Playing);
-            playingEvent += PlayingEvent;
-            SystemDefine.VoidEvent fallEvent = BirdManager._instance.GetStateEvent(BirdDefine.EBirdManagerState.Fall);
-            fallEvent += FallEvent;
+            // Set first pos
+            transform.position = BirdManager._instance.GetBirdFirstPos();
+            // Set first gravity
+            rigidBody.gravityScale = 0f;
+            // Initialize event
+            BirdManager._instance.SetStateEvent(BirdDefine.EBirdManagerState.Start, StartEvent);
+            BirdManager._instance.SetStateEvent(BirdDefine.EBirdManagerState.Playing, PlayingEvent);
+            BirdManager._instance.SetStateEvent(BirdDefine.EBirdManagerState.Fall, FallEvent);
         }
 
         private void StartEvent()
         {
             SetState(BirdDefine.EBirdState.Start);
-            transform.position = new Vector2(0, 0);
+            transform.position = BirdManager._instance.GetBirdFirstPos();
+            rigidBody.velocity = Vector2.zero;
             rigidBody.gravityScale = 0f;
         }
         private void PlayingEvent()
         {
             SetState(BirdDefine.EBirdState.Playing);
-            rigidBody.gravityScale = birdGravity;
+            rigidBody.velocity = Vector2.zero;
+            rigidBody.gravityScale = birdStat.GetBirdGravity();
         }
 
         private void FallEvent()
         {
             SetState(BirdDefine.EBirdState.Fall);
             rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
-            rigidBody.gravityScale = 0f;
         }
 
         public bool Flying()
@@ -96,16 +93,28 @@ namespace Bird
         {
             return this;
         }
-
         public float GetBirdGravityScale()
         {
             return rigidBody.gravityScale;
         }
-
+        public void SetBirdGravityScale(float scale)
+        {
+            rigidBody.gravityScale = scale;
+        }
+        public BirdStat GetBirdStat()
+        {
+            return birdStat;
+        }
         public Vector2 GetBirdPos()
         {
             return transform.position;
         }
+
+        public void SetBirdPos(Vector2 pos)
+        {
+            transform.position = pos;
+        }
+
 
         public BirdDefine.EBirdState GetState()
         {
@@ -143,7 +152,6 @@ namespace Bird
                     break;
             }
         }
-
 
     }
 }

@@ -6,7 +6,8 @@ namespace Input
 {
     public interface IInputManagerAdapter
     {
-
+        KeyCode GetFlyingKey();
+        void PressFlying();
     }
 }
 

@@ -8,15 +8,17 @@ namespace Pipe
     public interface IPipeManagerAdapter
     {
         void EnqueueToPipeQueue(PipeController pipe);
+        GameObject GetPipePrefab();
         float GetPipeSpeed();
         void SetPipeSpeed(float speed);
+        Queue<PipeController> GetPipeQueue();
         SystemDefine.VoidEventFloat GetPipeSpeedEvent();
         float GetStartPosX();
         float GetBoundX();
         Coroutine GetGeneratorCoroutine();
         PipeDefine.EPipeManagerState GetState();
         void SetState(PipeDefine.EPipeManagerState state);
-        SystemDefine.VoidEvent GetStateEvent(PipeDefine.EPipeManagerState state);
+        void SetStateEvent(PipeDefine.EPipeManagerState state, SystemDefine.VoidEvent func);
     }
 }
 

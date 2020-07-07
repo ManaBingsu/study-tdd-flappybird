@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: BirdStat
   m_EditorClassIdentifier: 
   flyingPower: 20
+  birdGravity: 5

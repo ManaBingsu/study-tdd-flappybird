@@ -1,13 +1,17 @@
-﻿using GameSystem;
+﻿using UnityEngine;
+using GameSystem;
 
 namespace Bird
 {
     public interface IBirdManagerAdapter
     {
-        BirdDefine.EBirdManagerState GetState();
+        BirdController GetBird();
+        Vector2 GetBirdFirstPos();
         float GetBoundY();
+        BirdDefine.EBirdManagerState GetState();
+
         void SetState(BirdDefine.EBirdManagerState state);
-        SystemDefine.VoidEvent GetStateEvent(BirdDefine.EBirdManagerState state);
+        void SetStateEvent(BirdDefine.EBirdManagerState state, SystemDefine.VoidEvent func);
     }
 }
 

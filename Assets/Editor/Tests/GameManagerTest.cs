@@ -9,59 +9,59 @@ namespace Tests
 {
     public class GameManagerTest
     {
-        GameManager gameManager;
-
         #region Initialize test
         [Test]
         public void IsGameManagerPrefabNotNull()
         {
-            Assert.IsNotNull(gameManager);
+            Assert.IsNotNull(GameManager._instance);
         }
         [Test]
         public void HasSingleton()
         {
-            Assert.IsNotNull(gameManager);
+            Assert.IsNotNull(GameManager._instance);
         }
         [Test]
         public void IsStateInitializedToStart()
         {
-            Assert.AreEqual(gameManager.GetState(), SystemDefine.EGameState.Start);
+            Assert.AreEqual(GameManager._instance.GetState(), SystemDefine.EGameState.Start);
         }
         #endregion
         #region State.Start test
         [Test]
         public void IsStateSetToStart()
         {
-            gameManager.SetState(SystemDefine.EGameState.Start);
-            Assert.AreEqual((int)gameManager.GetState(), (int)SystemDefine.EGameState.Start);
+            GameManager._instance.SetState(SystemDefine.EGameState.Start);
+            Assert.AreEqual((int)GameManager._instance.GetState(), (int)SystemDefine.EGameState.Start);
         }
         #endregion
         #region State.Playing test
         [Test]
         public void IsStateSetToPlaying()
         {
-            gameManager.SetState(SystemDefine.EGameState.Playing);
-            Assert.AreEqual(gameManager.GetState(), SystemDefine.EGameState.Playing);
+            GameManager._instance.SetState(SystemDefine.EGameState.Playing);
+            Assert.AreEqual(GameManager._instance.GetState(), SystemDefine.EGameState.Playing);
         }
         #endregion
         #region State.Fall test
         [Test]
         public void IsStateSetToFall()
         {
-            gameManager.SetState(SystemDefine.EGameState.Fall);
-            Assert.AreEqual(gameManager.GetState(), SystemDefine.EGameState.Fall);
+            GameManager._instance.SetState(SystemDefine.EGameState.Fall);
+            Assert.AreEqual(GameManager._instance.GetState(), SystemDefine.EGameState.Fall);
         }
         #endregion
         [SetUp]
         public void PrepareTest()
         {
-            gameManager = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefab/GameManager")).GetComponent<GameManager>();
+            if (GameManager._instance == null)
+            {
+                MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefab/GameManager"));
+            }
         }
 
         [TearDown]
         public void CleanUpTest()
         {
-            MonoBehaviour.Destroy(gameManager);
             GameManager._instance = null;
         }
     }

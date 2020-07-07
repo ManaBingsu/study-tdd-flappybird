@@ -1,15 +1,13 @@
-﻿using System;
+﻿using NSubstitute.Routing.Handlers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 namespace GameSystem
 {
     public class GameManager : MonoBehaviour, IGameManagerAdapter
     {
-        // Delegate
-        delegate void EventHandler();
         // Singleton
         public static GameManager _instance;
 
@@ -23,31 +21,42 @@ namespace GameSystem
         private event SystemDefine.VoidEvent playingEvent;
         private event SystemDefine.VoidEvent fallEvent;
 
-        void Awake()
+        public ref SystemDefine.VoidEvent tempFall()
         {
+            return ref fallEvent;
+        }
+
+        private void Awake()
+        {
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            // Make singleton
             if (_instance == null)
                 _instance = this;
             else
                 Destroy(this.gameObject);
         }
-
         public SystemDefine.EGameState GetState()
         {
             return gameState;
         }
 
-        public SystemDefine.VoidEvent GetStateEvent(SystemDefine.EGameState state)
+        public void SetStateEvent(SystemDefine.EGameState state, SystemDefine.VoidEvent func)
         {
             switch(state)
             {
                 case SystemDefine.EGameState.Start:
-                    return startEvent;
+                    startEvent += func;
+                    break;
                 case SystemDefine.EGameState.Playing:
-                    return playingEvent;
+                    playingEvent += func;
+                    break;
                 case SystemDefine.EGameState.Fall:
-                    return fallEvent;
-                default:
-                    return null;
+                    fallEvent += func;
+                    break;
             }
         }
 

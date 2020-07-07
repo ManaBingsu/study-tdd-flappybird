@@ -6,7 +6,8 @@
         "BirdAsmf",
         "PipeAsmf",
         "SystemAsmf",
-        "EntityAsmf"
+        "EntityAsmf",
+        "InputAsmf"
     ],
     "includePlatforms": [
         "Editor",

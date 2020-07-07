@@ -18,6 +18,10 @@ namespace Bird
         [SerializeField]
         private BirdDefine.EBirdManagerState birdState;
 
+        [Header("Bird first pos")]
+        [SerializeField]
+        private Vector2 birdFirstPos;
+
         [Header("boundY")]
         [SerializeField]
         private float boundY;
@@ -29,27 +33,26 @@ namespace Bird
 
         void Awake()
         {
+            Initialize();
+        }
+
+        void Initialize()
+        {
+            // Make singleton
             if (_instance == null)
                 _instance = this;
             else
                 Destroy(this.gameObject);
-            Initialized();
-        }
-
-        void Initialized()
-        {
             // Event to Manager
-            SystemDefine.VoidEvent startEvent = GameManager._instance.GetStateEvent(SystemDefine.EGameState.Start);
-            startEvent += StartEvent;
-            SystemDefine.VoidEvent playingEvent = GameManager._instance.GetStateEvent(SystemDefine.EGameState.Start);
-            playingEvent += PlayingEvent;
-            SystemDefine.VoidEvent fallEvent = GameManager._instance.GetStateEvent(SystemDefine.EGameState.Start);
-            fallEvent += FallEvent;
+            GameManager._instance.SetStateEvent(SystemDefine.EGameState.Start, StartEvent);
+            GameManager._instance.SetStateEvent(SystemDefine.EGameState.Playing, PlayingEvent);
+            GameManager._instance.SetStateEvent(SystemDefine.EGameState.Fall, FallEvent);
+            // Initialize bird
+            bird = Instantiate(Resources.Load<GameObject>("Prefab/Bird")).GetComponent<BirdController>();
         }
         private void StartEvent()
         {
             SetState(BirdDefine.EBirdManagerState.Start);
-
         }
         private void PlayingEvent()
         {
@@ -61,23 +64,34 @@ namespace Bird
             SetState(BirdDefine.EBirdManagerState.Fall);
         }
 
+        public BirdController GetBird()
+        {
+            return bird;
+        }
+
+        public Vector2 GetBirdFirstPos()
+        {
+            return birdFirstPos;
+        }
+
         public BirdDefine.EBirdManagerState GetState()
         {
             return birdState;
         }
 
-        public SystemDefine.VoidEvent GetStateEvent(BirdDefine.EBirdManagerState state)
+        public void SetStateEvent(BirdDefine.EBirdManagerState state, SystemDefine.VoidEvent func)
         {
             switch (state)
             {
                 case BirdDefine.EBirdManagerState.Start:
-                    return startEvent;
+                    startEvent += func;
+                    break;
                 case BirdDefine.EBirdManagerState.Playing:
-                    return playingEvent;
+                    playingEvent += func;
+                    break;
                 case BirdDefine.EBirdManagerState.Fall:
-                    return fallEvent;
-                default:
-                    return null;
+                    fallEvent += func;
+                    break;
             }
         }
 
@@ -102,6 +116,7 @@ namespace Bird
                     break;
             }
         }
+
     }
 }
 

@@ -4,7 +4,7 @@
     {
         SystemDefine.EGameState GetState();
         void SetState(SystemDefine.EGameState state);
-        SystemDefine.VoidEvent GetStateEvent(SystemDefine.EGameState state);
+        void SetStateEvent(SystemDefine.EGameState state, SystemDefine.VoidEvent func);
     }
 }
 

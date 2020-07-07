@@ -47,39 +47,36 @@ namespace Pipe
             func += new SystemDefine.VoidEventFloat(SetSpeed);
             rigidBody = GetComponent<Rigidbody2D>();
             // Event to Manager
-            SystemDefine.VoidEvent startEvent = PipeManager._instance.GetStateEvent(PipeDefine.EPipeManagerState.Start);
-            startEvent += StartEvent;
-            SystemDefine.VoidEvent playingEvent = PipeManager._instance.GetStateEvent(PipeDefine.EPipeManagerState.Playing);
-            playingEvent += PlayingEvent;
-            SystemDefine.VoidEvent fallEvent = PipeManager._instance.GetStateEvent(PipeDefine.EPipeManagerState.Fall);
-            fallEvent += FallEvent;
+            PipeManager._instance.SetStateEvent(PipeDefine.EPipeManagerState.Start, StartEvent);
+            PipeManager._instance.SetStateEvent(PipeDefine.EPipeManagerState.Playing, PlayingEvent);
+            PipeManager._instance.SetStateEvent(PipeDefine.EPipeManagerState.Fall, FallEvent);
+            pipeSpeed = PipeManager._instance.GetPipeSpeed();
+            gameObject.SetActive(false);
         }
         private void StartEvent()
         {
-            SetState(PipeDefine.EPipeState.On);
             pipeSpeed = 0f;
         }
         private void PlayingEvent()
         {
-
+            pipeSpeed = PipeManager._instance.GetPipeSpeed();
         }
 
         private void FallEvent()
         {
-            PipeManager._instance.EnqueueToPipeQueue(this);
+            gameObject.SetActive(false);
             pipeSpeed = 0f;
         }
 
         private void Move()
         {
-            rigidBody.velocity = new Vector2(-pipeSpeed, 0);
+            transform.position += new Vector3(-pipeSpeed, 0, 0) * Time.deltaTime;
         }
 
         private void SetSpeed(float speed)
         {
             pipeSpeed = speed;
         }
-
 
         public void SetPipeSpeed(float speed)
         {
@@ -108,27 +105,17 @@ namespace Pipe
             return pipeState;
         }
 
-        public SystemDefine.VoidEvent GetStateEvent(PipeDefine.EPipeState state)
+        public void SetStateEvent(PipeDefine.EPipeState state, SystemDefine.VoidEvent func)
         {
             switch (state)
             {
                 case PipeDefine.EPipeState.Off:
-                    return offEvent;
+                    offEvent += func;
+                    break;
                 case PipeDefine.EPipeState.On:
-                    return onEvent;
-                default:
-                    return null;
+                    onEvent += func;
+                    break;
             }
-        }
-
-        private void PipeOnEvent()
-        {
-
-        }
-
-        private void PipeOffEvent()
-        {
-            PipeManager._instance.EnqueueToPipeQueue(this);
         }
 
         public void SetState(PipeDefine.EPipeState state)
@@ -137,16 +124,15 @@ namespace Pipe
             switch (pipeState)
             {
                 case PipeDefine.EPipeState.Off:
-                    PipeOffEvent();
+                    // Return to queue
+                    PipeManager._instance.EnqueueToPipeQueue(this);
                     offEvent?.Invoke();
                     break;
                 case PipeDefine.EPipeState.On:
-                    PipeOnEvent();
                     onEvent?.Invoke();
                     break;
             }
         }
-
     }
 }
 

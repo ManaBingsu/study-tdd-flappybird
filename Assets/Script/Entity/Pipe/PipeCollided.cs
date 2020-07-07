@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameSystem;
 
 namespace Pipe
 {
@@ -10,7 +11,7 @@ namespace Pipe
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                PipeManager._instance.CollidedPipe();
+                GameManager._instance.SetState(SystemDefine.EGameState.Fall);
             }
         }
     }

@@ -74,16 +74,17 @@ namespace Pipe
         private void Initialize()
         {
             pipeQueue = new Queue<PipeController>();
-            SetPipeSpeed(0);
-            // Event to Manager
-            SystemDefine.VoidEvent startEvent = GameManager._instance.GetStateEvent(SystemDefine.EGameState.Start);
-            startEvent += StartEvent;
-            SystemDefine.VoidEvent playingEvent = GameManager._instance.GetStateEvent(SystemDefine.EGameState.Start);
-            playingEvent += PlayingEvent;
-            SystemDefine.VoidEvent fallEvent = GameManager._instance.GetStateEvent(SystemDefine.EGameState.Start);
-            fallEvent += FallEvent;
-        }
+            // Initialize event
+            GameManager._instance.SetStateEvent(SystemDefine.EGameState.Start, StartEvent);
+            GameManager._instance.SetStateEvent(SystemDefine.EGameState.Playing, PlayingEvent);
+            GameManager._instance.SetStateEvent(SystemDefine.EGameState.Fall, FallEvent);
+            // Init pipe prefab
 
+        }
+        public GameObject GetPipePrefab()
+        {
+            return pipePrefab;
+        }
         private void StartEvent()
         {
             SetState(PipeDefine.EPipeManagerState.Start);
@@ -93,10 +94,9 @@ namespace Pipe
         private void PlayingEvent()
         {
             SetState(PipeDefine.EPipeManagerState.Playing);
-            pipeGenertor = StartCoroutine(GeneratePipes());
             pipeCurrentSpeed = pipeSpeed;
+            pipeGenertor = StartCoroutine(GeneratePipes());
         }
-
         private void FallEvent()
         {
             SetState(PipeDefine.EPipeManagerState.Fall);
@@ -106,6 +106,7 @@ namespace Pipe
 
         private IEnumerator GeneratePipes()
         {
+            DequeuePipeRandomly();
             float progress = 0f;
             while (managerState == PipeDefine.EPipeManagerState.Playing)
             {
@@ -113,6 +114,7 @@ namespace Pipe
                 if (progress > createDelay)
                 {
                     DequeuePipeRandomly();
+                    progress = 0f;
                 }
                 yield return null;
             }
@@ -123,17 +125,17 @@ namespace Pipe
             // If queue is empty, than create more pipe
             if (pipeQueue.Count == 0)
             {
-                PipeController newPipe = Instantiate(pipePrefab).GetComponent<PipeController>();
+                PipeController newPipe = Instantiate((Resources.Load<GameObject>("Prefab/Pipe"))).GetComponent<PipeController>();
                 pipeQueue.Enqueue(newPipe);
                 newPipe.transform.parent = this.gameObject.transform;
             }
             PipeController pipe = pipeQueue.Dequeue();
+            // pipe SetActive true
+            pipe.gameObject.SetActive(true);
             // Set pipe state On
             pipe.SetState(PipeDefine.EPipeState.On);
             // Random position
             pipe.transform.position = new Vector3(startPosX, UnityEngine.Random.Range(generatePosMin, generatePosMax));
-            // Set Pipe Speed
-            pipe.SetPipeSpeed(pipeCurrentSpeed);
         }
 
         public float GetPipeSpeed()
@@ -145,7 +147,7 @@ namespace Pipe
             if (pipeSpeed != speed)
             {
                 pipeSpeed = speed;
-                pipeSpeedEvent(pipeSpeed);
+                pipeSpeedEvent?.Invoke(pipeSpeed);
             }        
         }
         public SystemDefine.VoidEventFloat GetPipeSpeedEvent()
@@ -164,14 +166,12 @@ namespace Pipe
         {
             return pipeGenertor;
         }
-        public Queue<PipeController> GetPipeQueue()
-        {
-            return pipeQueue;
-        }
         public void EnqueueToPipeQueue(PipeController pipe)
         {
-            pipe.SetState(PipeDefine.EPipeState.Off);
             pipe.transform.parent = this.transform;
+            // pipe SetActive false
+            pipe.gameObject.SetActive(false);
+            // Enqueue
             pipeQueue.Enqueue(pipe);
         }
 
@@ -180,18 +180,19 @@ namespace Pipe
             return managerState;
         }
 
-        public SystemDefine.VoidEvent GetStateEvent(PipeDefine.EPipeManagerState state)
+        public void SetStateEvent(PipeDefine.EPipeManagerState state, SystemDefine.VoidEvent func)
         {
             switch (state)
             {
                 case PipeDefine.EPipeManagerState.Start:
-                    return startEvent;
+                    startEvent += func;
+                    break;
                 case PipeDefine.EPipeManagerState.Playing:
-                    return playingEvent;
+                    playingEvent += func;
+                    break;
                 case PipeDefine.EPipeManagerState.Fall:
-                    return fallEvent;
-                default:
-                    return null;
+                    fallEvent += func;
+                    break;
             }
         }
 
@@ -212,17 +213,9 @@ namespace Pipe
             }
         }
 
-        // Pass pipe
-        public void PassPipe()
+        public Queue<PipeController> GetPipeQueue()
         {
-            int currentScore = ScoreManager._instance.GetCurrentScore();
-            ScoreManager._instance.SetCurrentScore(currentScore + 1);
-        }
-
-        // Collided with pipe
-        public void CollidedPipe()
-        {
-            GameManager._instance.SetState(SystemDefine.EGameState.Fall);
+            return pipeQueue;
         }
     }
 }
