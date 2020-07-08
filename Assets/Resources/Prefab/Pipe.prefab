@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6109142856898693914}
   m_Layer: 0
   m_Name: UpPipe
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -124,13 +124,13 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_AngularDrag: 0
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_CollisionDetection: 1
+  m_Constraints: 2
 --- !u!114 &6109142856898693914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 6109142857077778849}
   m_Layer: 0
   m_Name: DownPipe
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -362,13 +362,13 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_AngularDrag: 0
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_CollisionDetection: 1
+  m_Constraints: 2
 --- !u!61 &6109142857077778848
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -417,11 +417,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6109142858694008559}
   - component: {fileID: 6109142858694008557}
-  - component: {fileID: 6109142858694008558}
   - component: {fileID: 6109142858694008556}
   m_Layer: 0
   m_Name: SafeCheck
-  m_TagString: Untagged
+  m_TagString: ScoreWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -466,18 +465,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 3}
   m_EdgeRadius: 0
---- !u!114 &6109142858694008558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6109142858694008552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 148c797a337ff124b9c94a3a47c11831, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &6109142858694008556
 Rigidbody2D:
   serializedVersion: 4
@@ -497,5 +484,5 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0

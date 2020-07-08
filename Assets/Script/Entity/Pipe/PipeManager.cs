@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameSystem;
+using System.Linq;
 
 namespace Pipe
 {
@@ -39,8 +40,9 @@ namespace Pipe
         [SerializeField]
         private float pipeSpeed;
 
+        [SerializeField]
         // Pipe current speed
-        private float pipeCurrentSpeed;
+        private float currentPipeSpeed;
 
         // Pipe prefab
         [Header("Pipe prefab")]
@@ -78,8 +80,13 @@ namespace Pipe
             GameManager._instance.SetStateEvent(SystemDefine.EGameState.Start, StartEvent);
             GameManager._instance.SetStateEvent(SystemDefine.EGameState.Playing, PlayingEvent);
             GameManager._instance.SetStateEvent(SystemDefine.EGameState.Fall, FallEvent);
-            // Init pipe prefab
-
+            // Init pipe speed
+            currentPipeSpeed = pipeSpeed;
+            // Init Pipe prefab
+ 
+            pipePrefab = Instantiate((Resources.Load<GameObject>("Prefab/Pipe")));  
+            PipeController initPipe = pipePrefab.GetComponent<PipeController>();
+            initPipe.transform.parent = this.gameObject.transform;
         }
         public GameObject GetPipePrefab()
         {
@@ -87,25 +94,30 @@ namespace Pipe
         }
         private void StartEvent()
         {
+            currentPipeSpeed = 0;
             SetState(PipeDefine.EPipeManagerState.Start);
             pipeGenertor = null;
-            pipeCurrentSpeed = 0;
+            SetPipeSpeed(currentPipeSpeed);
         }
         private void PlayingEvent()
         {
+            currentPipeSpeed = pipeSpeed;
             SetState(PipeDefine.EPipeManagerState.Playing);
-            pipeCurrentSpeed = pipeSpeed;
             pipeGenertor = StartCoroutine(GeneratePipes());
+            SetPipeSpeed(currentPipeSpeed);
         }
         private void FallEvent()
         {
+            currentPipeSpeed = 0;
             SetState(PipeDefine.EPipeManagerState.Fall);
             StopCoroutine(GeneratePipes());
-            pipeCurrentSpeed = 0;
+
+            SetPipeSpeed(currentPipeSpeed);
         }
 
         private IEnumerator GeneratePipes()
         {
+
             DequeuePipeRandomly();
             float progress = 0f;
             while (managerState == PipeDefine.EPipeManagerState.Playing)
@@ -122,32 +134,33 @@ namespace Pipe
 
         private void DequeuePipeRandomly()
         {
+            PipeController newPipe;
             // If queue is empty, than create more pipe
-            if (pipeQueue.Count == 0)
+            if (pipeQueue.Count < 1)
             {
-                PipeController newPipe = Instantiate((Resources.Load<GameObject>("Prefab/Pipe"))).GetComponent<PipeController>();
-                pipeQueue.Enqueue(newPipe);
+                newPipe = Instantiate(pipePrefab).GetComponent<PipeController>();
                 newPipe.transform.parent = this.gameObject.transform;
+                EnqueueToPipeQueue(newPipe);
             }
             PipeController pipe = pipeQueue.Dequeue();
-            // pipe SetActive true
+            // Set pipe Active true
             pipe.gameObject.SetActive(true);
-            // Set pipe state On
-            pipe.SetState(PipeDefine.EPipeState.On);
+            // Set pipe state to PlayingState
+            pipe.SetState(PipeDefine.EPipeState.Playing);
             // Random position
             pipe.transform.position = new Vector3(startPosX, UnityEngine.Random.Range(generatePosMin, generatePosMax));
         }
 
         public float GetPipeSpeed()
         {
-            return pipeSpeed;
+            return currentPipeSpeed;
         }
         public void SetPipeSpeed(float speed)
         {
-            if (pipeSpeed != speed)
+            if (currentPipeSpeed != speed)
             {
-                pipeSpeed = speed;
-                pipeSpeedEvent?.Invoke(pipeSpeed);
+                currentPipeSpeed = speed;
+                pipeSpeedEvent?.Invoke(currentPipeSpeed);
             }        
         }
         public SystemDefine.VoidEventFloat GetPipeSpeedEvent()
@@ -168,8 +181,7 @@ namespace Pipe
         }
         public void EnqueueToPipeQueue(PipeController pipe)
         {
-            pipe.transform.parent = this.transform;
-            // pipe SetActive false
+            pipe.transform.position = new Vector3(startPosX, UnityEngine.Random.Range(generatePosMin, generatePosMax));
             pipe.gameObject.SetActive(false);
             // Enqueue
             pipeQueue.Enqueue(pipe);
@@ -194,6 +206,10 @@ namespace Pipe
                     fallEvent += func;
                     break;
             }
+        }
+        public void SetPipeSPeedEvent(SystemDefine.VoidEventFloat func)
+        {
+            pipeSpeedEvent += func;
         }
 
         public void SetState(PipeDefine.EPipeManagerState state)

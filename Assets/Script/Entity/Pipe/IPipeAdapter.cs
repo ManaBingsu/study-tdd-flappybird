@@ -9,7 +9,7 @@ namespace Pipe
     public interface IPipeAdapter
     {
         Vector2 GetPipePos();
-        void SetPipeSpeed(float speed);
+        void SetSpeed(float speed);
         PipeDefine.EPipeState GetState();
         void SetState(PipeDefine.EPipeState state);
         void SetStateEvent(PipeDefine.EPipeState state, SystemDefine.VoidEvent func);

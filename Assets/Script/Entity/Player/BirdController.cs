@@ -23,6 +23,7 @@ namespace Bird
         private Rigidbody2D rigidBody;
         private SpriteRenderer spriteRenderer;
         private Animator animator;
+        private CircleCollider2D collider;
 
         // State event
         private event SystemDefine.VoidEvent startEvent;
@@ -34,6 +35,23 @@ namespace Bird
             Initialize();
         }
 
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.CompareTag("Wall"))
+            {
+                GameManager._instance.SetState(SystemDefine.EGameState.Fall);
+            }
+        }
+
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            if (collision.gameObject.CompareTag("ScoreWall"))
+            {
+                int currentScore = ScoreManager._instance.GetCurrentScore();
+                ScoreManager._instance.SetCurrentScore(currentScore + 1);
+            }
+        }
+
         private void Initialize()
         {
             // Create BirdStat object
@@ -42,6 +60,7 @@ namespace Bird
             rigidBody = GetComponent<Rigidbody2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+            collider = GetComponent<CircleCollider2D>();
             // Set first pos
             transform.position = BirdManager._instance.GetBirdFirstPos();
             // Set first gravity
@@ -58,6 +77,7 @@ namespace Bird
             transform.position = BirdManager._instance.GetBirdFirstPos();
             rigidBody.velocity = Vector2.zero;
             rigidBody.gravityScale = 0f;
+            collider.enabled = true;
         }
         private void PlayingEvent()
         {
@@ -69,6 +89,7 @@ namespace Bird
         private void FallEvent()
         {
             SetState(BirdDefine.EBirdState.Fall);
+            collider.enabled = false;
             rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
         }
 

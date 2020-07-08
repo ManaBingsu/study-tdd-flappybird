@@ -13,6 +13,7 @@ namespace Pipe
         void SetPipeSpeed(float speed);
         Queue<PipeController> GetPipeQueue();
         SystemDefine.VoidEventFloat GetPipeSpeedEvent();
+        void SetPipeSPeedEvent(SystemDefine.VoidEventFloat func);
         float GetStartPosX();
         float GetBoundX();
         Coroutine GetGeneratorCoroutine();

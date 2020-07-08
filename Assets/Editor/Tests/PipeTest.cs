@@ -15,7 +15,7 @@ namespace Tests
         [Test]
         public void Init_IsStateInitializedToOff()
         {
-            Assert.AreEqual(PipeDefine.EPipeState.Off, pipe.GetState());
+            Assert.AreEqual(0, 1);
         }
         [Test]
         public void Init_IsActiveFalseWhenInitialized()
@@ -27,58 +27,34 @@ namespace Tests
         [UnityTest]
         public IEnumerator On_InBound_IsStateOnWhenInBound()
         {
-            pipe.SetState(PipeDefine.EPipeState.On);
-            pipe.transform.position = new Vector2(PipeManager._instance.GetBoundX() + 10f, 0f);
-            float time = 0f;
-            while (time <= 3f)
-            {
-                time += Time.deltaTime;
-                yield return null;
-            }
-            Assert.AreEqual(PipeDefine.EPipeState.On, pipe.GetState());
+            Assert.AreEqual(0, 1);
+            yield return null;
         }
         [UnityTest]
         public IEnumerator On_InBound_IsActiveTrueWhenInBound()
         {
-            pipe.SetState(PipeDefine.EPipeState.On);
-            pipe.transform.position = new Vector2(PipeManager._instance.GetBoundX() + 10f, 0f);
-            float time = 0f;
-            while (time <= 3f)
-            {
-                time += Time.deltaTime;
-                yield return null;
-            }
-            Assert.AreEqual(true, pipe.gameObject.activeSelf);
+            Assert.AreEqual(0, 1);
+            yield return null;
         }
         #endregion
         #region State.On, OutBound test
         [UnityTest]
         public IEnumerator On_OutBound_IsStateSetOffWhenOutOfBound()
         {
-            pipe.SetState(PipeDefine.EPipeState.On);
-            pipe.transform.position = new Vector2(PipeManager._instance.GetBoundX() - 3f, 0f);
-            float time = 0f;
-            while (time <= 3f)
-            {
-                time += Time.deltaTime;
-                yield return null;
-            }
-            Assert.AreEqual(PipeDefine.EPipeState.Off, pipe.GetState());
+            Assert.AreEqual(0, 1);
+            yield return null;
         }
         #endregion
         #region State.Off test
         [Test]
         public void Off_IsReturnToQueueWhenOff()
         {
-            pipe.SetState(PipeDefine.EPipeState.On);
-            pipe.SetState(PipeDefine.EPipeState.Off);
-            Assert.IsNotNull(PipeManager._instance.GetPipeQueue());
+            Assert.AreEqual(0, 1);
         }
         [Test]
         public void Off_IsSetActiveFalseWhenOff()
         {
-            pipe.SetState(PipeDefine.EPipeState.Off);
-            Assert.AreEqual(false, pipe.gameObject.activeSelf);
+            Assert.AreEqual(0, 1);
         }
         #endregion
         [SetUp]

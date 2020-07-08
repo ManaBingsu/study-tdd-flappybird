@@ -55,7 +55,7 @@ namespace GameSystem
         private void StartEvent()
         {
             SetState(SystemDefine.EGameState.Start);
-            currentScore = 0;
+            SetCurrentScore(0);
         }
 
         private void PlayingEvent()
@@ -66,7 +66,6 @@ namespace GameSystem
         private void FallEvent()
         {
             SetState(SystemDefine.EGameState.Fall);
-            SetHighScore(currentScore);
         }
 
         public int GetCurrentScore()
@@ -81,9 +80,6 @@ namespace GameSystem
 
         public void SetCurrentScore(int score)
         {
-            // If not in playing state, return
-            if (gameState != SystemDefine.EGameState.Playing)
-                return;
             // Set new current score
             currentScore = score;
             // Run setScore event
@@ -129,18 +125,6 @@ namespace GameSystem
             }
         }
 
-        public SystemDefine.VoidEvent GetScoreEvent(SystemDefine.EScoreType type)
-        {
-            switch (type)
-            {
-                case SystemDefine.EScoreType.Current:
-                    return setCurrentScoreEvent;
-                case SystemDefine.EScoreType.High:
-                    return setHighScoreEvent;
-                default:
-                    return null;
-            }
-        }
 
         public void SetState(SystemDefine.EGameState state)
         {
@@ -154,11 +138,23 @@ namespace GameSystem
                     playingEvent?.Invoke();
                     break;
                 case SystemDefine.EGameState.Fall:
+                    SetHighScore(currentScore);
                     fallEvent?.Invoke();
                     break;
             }
         }
 
-
+        public void SetScoreEvent(SystemDefine.EScoreType type, SystemDefine.VoidEvent func)
+        {
+            switch(type)
+            {
+                case SystemDefine.EScoreType.Current:
+                    setCurrentScoreEvent += func;
+                    break;
+                case SystemDefine.EScoreType.High:
+                    setHighScoreEvent += func;
+                    break;
+            }
+        }
     }
 }

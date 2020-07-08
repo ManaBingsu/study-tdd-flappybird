@@ -21,8 +21,9 @@ namespace Pipe
         Rigidbody2D rigidBody;
 
         // State event
-        private event SystemDefine.VoidEvent offEvent;
-        private event SystemDefine.VoidEvent onEvent;
+        private event SystemDefine.VoidEvent startEvent;
+        private event SystemDefine.VoidEvent playingEvent;
+        private event SystemDefine.VoidEvent fallEvent;
 
         private void Awake()
         {
@@ -33,7 +34,7 @@ namespace Pipe
         {
             if (IsOutOfBound())
             {
-                SetState(PipeDefine.EPipeState.Off);
+                PipeManager._instance.EnqueueToPipeQueue(this);
             }
             else
             {
@@ -50,35 +51,40 @@ namespace Pipe
             PipeManager._instance.SetStateEvent(PipeDefine.EPipeManagerState.Start, StartEvent);
             PipeManager._instance.SetStateEvent(PipeDefine.EPipeManagerState.Playing, PlayingEvent);
             PipeManager._instance.SetStateEvent(PipeDefine.EPipeManagerState.Fall, FallEvent);
+            PipeManager._instance.SetPipeSPeedEvent(SetSpeedEvent);
             pipeSpeed = PipeManager._instance.GetPipeSpeed();
-            gameObject.SetActive(false);
         }
         private void StartEvent()
         {
-            pipeSpeed = 0f;
+            SetState(PipeDefine.EPipeState.Start);
+            SetSpeed(PipeManager._instance.GetPipeSpeed());
+            PipeManager._instance.EnqueueToPipeQueue(this);
         }
         private void PlayingEvent()
         {
-            pipeSpeed = PipeManager._instance.GetPipeSpeed();
+            SetState(PipeDefine.EPipeState.Playing);
+            SetSpeed(PipeManager._instance.GetPipeSpeed());
         }
 
         private void FallEvent()
         {
-            gameObject.SetActive(false);
-            pipeSpeed = 0f;
+            SetState(PipeDefine.EPipeState.Fall);
+            SetSpeed(PipeManager._instance.GetPipeSpeed());
+        }
+
+        private void SetSpeedEvent(float speed)
+        {
+            SetSpeed(speed);
         }
 
         private void Move()
         {
-            transform.position += new Vector3(-pipeSpeed, 0, 0) * Time.deltaTime;
+            //rigid.position += new Vector3(-pipeSpeed, 0, 0) * Time.deltaTime;
+            rigidBody.MovePosition(transform.position + new Vector3(-pipeSpeed, 0, 0) * Time.deltaTime);
+            //rigidBody.AddForce(new Vector3(-pipeSpeed, 0f, 0f));
         }
 
-        private void SetSpeed(float speed)
-        {
-            pipeSpeed = speed;
-        }
-
-        public void SetPipeSpeed(float speed)
+        public void SetSpeed(float speed)
         {
             pipeSpeed = speed;
         }
@@ -109,11 +115,14 @@ namespace Pipe
         {
             switch (state)
             {
-                case PipeDefine.EPipeState.Off:
-                    offEvent += func;
+                case PipeDefine.EPipeState.Start:
+                    startEvent += func;
                     break;
-                case PipeDefine.EPipeState.On:
-                    onEvent += func;
+                case PipeDefine.EPipeState.Playing:
+                    playingEvent += func;
+                    break;
+                case PipeDefine.EPipeState.Fall:
+                    fallEvent += func;
                     break;
             }
         }
@@ -123,13 +132,14 @@ namespace Pipe
             pipeState = state;
             switch (pipeState)
             {
-                case PipeDefine.EPipeState.Off:
-                    // Return to queue
-                    PipeManager._instance.EnqueueToPipeQueue(this);
-                    offEvent?.Invoke();
+                case PipeDefine.EPipeState.Start:
+                    startEvent?.Invoke();
                     break;
-                case PipeDefine.EPipeState.On:
-                    onEvent?.Invoke();
+                case PipeDefine.EPipeState.Playing:
+                    playingEvent?.Invoke();
+                    break;
+                case PipeDefine.EPipeState.Fall:
+                    fallEvent?.Invoke();
                     break;
             }
         }

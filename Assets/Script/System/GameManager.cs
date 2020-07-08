@@ -21,14 +21,15 @@ namespace GameSystem
         private event SystemDefine.VoidEvent playingEvent;
         private event SystemDefine.VoidEvent fallEvent;
 
-        public ref SystemDefine.VoidEvent tempFall()
-        {
-            return ref fallEvent;
-        }
 
         private void Awake()
         {
             Initialize();
+        }
+
+        private void Start()
+        {
+            GameManager._instance.SetState(SystemDefine.EGameState.Start);
         }
 
         private void Initialize()

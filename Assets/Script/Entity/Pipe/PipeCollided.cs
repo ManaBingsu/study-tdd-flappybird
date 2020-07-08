@@ -7,13 +7,13 @@ namespace Pipe
 {
     public class PipeCollided : MonoBehaviour
     {
-        private void OnCollisionEnter2D(Collision2D collision)
+        /*private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.CompareTag("Player"))
             {
                 GameManager._instance.SetState(SystemDefine.EGameState.Fall);
             }
-        }
+        }*/
     }
 }
 

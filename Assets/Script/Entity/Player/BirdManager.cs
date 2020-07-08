@@ -36,6 +36,12 @@ namespace Bird
             Initialize();
         }
 
+        void Update()
+        {
+            if (bird.GetBirdPos().y < -10)
+                bird.SetBirdGravityScale(0);
+        }
+
         void Initialize()
         {
             // Make singleton

@@ -1,18 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using GameSystem;
 
-public class ResultUI : MonoBehaviour
+namespace MainUI
 {
-    // Start is called before the first frame update
-    void Start()
+    public class ResultUI : MonoBehaviour
     {
-        
-    }
+        public Text highScoreText;
+        public Text currentScoreText;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Awake()
+        {
+            InitEvent();
+        }
+
+        void InitEvent()
+        {
+            ScoreManager._instance.SetStateEvent(SystemDefine.EGameState.Fall, UpdateEvent);
+        }
+
+        void UpdateEvent()
+        {
+            highScoreText.text = ScoreManager._instance.GetHighScore().ToString();
+            currentScoreText.text = ScoreManager._instance.GetCurrentScore().ToString();
+        }
     }
 }

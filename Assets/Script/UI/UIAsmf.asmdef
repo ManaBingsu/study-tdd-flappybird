@@ -1,6 +1,8 @@
 {
     "name": "UIAsmf",
-    "references": [],
+    "references": [
+        "GUID:6bbcaae9b33854c4fbb08ccdd3531460"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe187cc751539d244ad14c5b75ba16ac, type: 3}
   m_Name: BirdStat
   m_EditorClassIdentifier: 
-  flyingPower: 20
-  birdGravity: 5
+  flyingPower: 10
+  birdGravity: 4

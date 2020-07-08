@@ -7,7 +7,7 @@ namespace Pipe
     public class PipeDefine
     {
         public enum EPipeManagerState { Start, Playing, Fall, NULL }
-        public enum EPipeState { Off, On, NULL }
+        public enum EPipeState { Start, Playing, Fall, NULL }
     }
 }
 

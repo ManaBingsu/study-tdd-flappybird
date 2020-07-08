@@ -9,7 +9,6 @@ namespace Pipe
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                Debug.Log("get");
                 int currentScore = ScoreManager._instance.GetCurrentScore();
                 ScoreManager._instance.SetCurrentScore(currentScore + 1);
             }

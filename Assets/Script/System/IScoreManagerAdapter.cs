@@ -12,7 +12,7 @@ namespace GameSystem
         SystemDefine.EGameState GetState();
         void SetState(SystemDefine.EGameState state);
         void SetStateEvent(SystemDefine.EGameState state, SystemDefine.VoidEvent func);
-        SystemDefine.VoidEvent GetScoreEvent(SystemDefine.EScoreType type);
+        void SetScoreEvent(SystemDefine.EScoreType type, SystemDefine.VoidEvent func);
     }
 }
 

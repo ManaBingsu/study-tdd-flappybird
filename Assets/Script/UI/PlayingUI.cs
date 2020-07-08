@@ -1,18 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameSystem;
+using UnityEngine.UI;
 
-public class PlayingUI : MonoBehaviour
+namespace MainUI
 {
-    // Start is called before the first frame update
-    void Start()
+    public class PlayingUI : MonoBehaviour
     {
-        
-    }
+        public Text currentScoreText;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Awake()
+        {
+            InitEvent();
+        }
+
+        void InitEvent()
+        {
+            ScoreManager._instance.SetScoreEvent(SystemDefine.EScoreType.Current, UpdateCurrentScore);
+        }
+
+        public void UpdateCurrentScore()
+        {
+            currentScoreText.text = ScoreManager._instance.GetCurrentScore().ToString();
+        }
     }
 }
+
