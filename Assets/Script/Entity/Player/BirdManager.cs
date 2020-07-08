@@ -39,7 +39,10 @@ namespace Bird
         void Update()
         {
             if (bird.GetBirdPos().y < -10)
+            {
+                bird.SetBirdPos(new Vector2(0, -10));
                 bird.SetBirdGravityScale(0);
+            }
         }
 
         void Initialize()
