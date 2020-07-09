@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Bird
 {
-    [CreateAssetMenu(fileName = "Bird stat data", menuName = "Data/BirdStatData")]
+    [CreateAssetMenu(fileName = "Bird stat data", menuName = "V1/BirdStatData")]
     public class BirdStat : ScriptableObject
     {
         [SerializeField]

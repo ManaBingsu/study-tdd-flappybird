@@ -1,14 +1,12 @@
 {
-    "name": "Tests",
+    "name": "Tests2",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "FlappyBirdAD"
+        "V2AD"
     ],
     "includePlatforms": [
-        "Editor",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
+        "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -17,7 +15,7 @@
         "nunit.framework.dll",
         "NSubstitute.dll"
     ],
-    "autoReferenced": true,
+    "autoReferenced": false,
     "defineConstraints": [
         "UNITY_INCLUDE_TESTS"
     ],

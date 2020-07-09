@@ -2013,6 +2013,11 @@ PrefabInstance:
       propertyPath: generatePosMax
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 8113773518550116044, guid: fb9cb8c63e6b81943b154e6cebf65eab,
+        type: 3}
+      propertyPath: boundX
+      value: -6
+      objectReference: {fileID: 0}
     - target: {fileID: 8113773518550116045, guid: fb9cb8c63e6b81943b154e6cebf65eab,
         type: 3}
       propertyPath: m_LocalPosition.x
